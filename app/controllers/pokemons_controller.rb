@@ -18,14 +18,22 @@ class PokemonsController < ApplicationController
       return
     end
 
-    @pokemons = Pokemon.limit(per_page).offset((page - 1) * per_page).all
+    nb_pokemons = Pokemon.count
+    offset = (page - 1) * per_page
+
+    if offset >= nb_pokemons
+      render :nothing => true, :status => 404
+      return
+    end
+
+    @pokemons = Pokemon.limit(per_page).offset(offset).all
     render json: {
       :page => page,
       :per_page => per_page,
-      :has_next => true,
-      :has_prev => true,
+      :has_next => offset + per_page < nb_pokemons,
+      :has_prev => offset - per_page >= 0,
       :pokemons => @pokemons,
-    }
+    }, :status => :ok
   end
 
   def create
