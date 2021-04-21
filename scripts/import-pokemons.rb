@@ -50,7 +50,7 @@ csv.each do |row|
     :sp_defense => sp_defense,
     :speed => speed,
     :generation => generation,
-    :is_legendary => is_legendary
+    :is_legendary => is_legendary == "True"
   )
 
 end
