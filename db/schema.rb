@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2021_04_21_175030) do
     t.boolean "is_legendary"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["number"], name: "index_pokemons_on_number", unique: true
     t.index ["type_1_id"], name: "index_pokemons_on_type_1_id"
     t.index ["type_2_id"], name: "index_pokemons_on_type_2_id"
   end

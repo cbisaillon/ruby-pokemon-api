@@ -16,6 +16,8 @@ class CreatePokemons < ActiveRecord::Migration[6.1]
       t.boolean :is_legendary
 
       t.timestamps
+
+      t.index :number, unique: true
     end
   end
 end
