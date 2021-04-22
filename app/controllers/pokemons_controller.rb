@@ -39,24 +39,59 @@ class PokemonsController < ApplicationController
   #
   # View a specific pokemon's data
   def view
-    unless params.has_key?(:id)
-      render :nothing => true, :status => :bad_request
+    @pokemon = make_sure_pokemon_exists
+    if @pokemon == nil
+      render :nothing => true, :status => 404
       return
     end
 
-    @pokemon = Pokemon.find(params[:id])
     render json: @pokemon, :status => :ok
   end
 
+  #
+  # Create a new pokemon
   def create
 
   end
 
-  def edit
+  #
+  # Update an existing pokemon
+  def update
+    @pokemon = make_sure_pokemon_exists
+    if @pokemon == nil
+      render :nothing => true, :status => 404
+      return
+    end
 
   end
 
+  #
+  # Delete a specific Pokemon instance from the database
   def delete
+    @pokemon = make_sure_pokemon_exists
+    if @pokemon == nil
+      render :nothing => true, :status => 404
+      return
+    end
 
+    deleted_pokemon = @pokemon.delete
+    render json: deleted_pokemon, :status => :ok
+  end
+
+  #
+  # Utility method to stay DRY
+  def make_sure_pokemon_exists()
+    unless params.has_key?(:id)
+      return nil
+    end
+
+    @pokemon = Pokemon.find_by_id(params[:id])
+
+    # Make sure the pokemon exists
+    if @pokemon == nil
+      return nil
+    end
+
+    @pokemon
   end
 end
