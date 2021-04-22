@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_21_175030) do
+ActiveRecord::Schema.define(version: 2021_04_22_205016) do
 
   create_table "pokemons", force: :cascade do |t|
-    t.integer "number"
-    t.string "name"
+    t.integer "number", null: false
+    t.string "name", null: false
     t.integer "type_1_id", null: false
-    t.integer "type_2_id", null: false
+    t.integer "type_2_id"
     t.integer "total"
     t.integer "hp"
     t.integer "attack"

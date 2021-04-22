@@ -39,7 +39,7 @@ class PokemonsController < ApplicationController
   #
   # View a specific pokemon's data
   def view
-    @pokemon = make_sure_pokemon_exists
+    @pokemon = get_pokemon_from_request
     if @pokemon == nil
       render :nothing => true, :status => 404
       return
@@ -51,13 +51,42 @@ class PokemonsController < ApplicationController
   #
   # Create a new pokemon
   def create
+    # Make sure required params are present
+    required_params = ["number", "name", "type_1_id"]
+    required_params.each do |required_param|
+      unless params.has_key?(required_param)
+        render json: {
+          :error => "Missing params"
+        }, :status => :bad_request
+        return
+      end
+    end
 
+    # Create the new pokemon
+    @pokemon = Pokemon.new(
+      number: params[:number],
+      name: params[:name],
+      type_1_id: params[:type_1_id],
+      type_2_id: params[:type_2_id],
+      total: params[:total],
+      hp: params[:hp],
+      attack: params[:attack],
+      defense: params[:defense],
+      sp_attack: params[:sp_attack],
+      sp_defense: params[:sp_defense],
+      speed: params[:speed],
+      generation: params[:generation],
+      is_legendary: params[:is_legendary]
+    )
+
+    @pokemon.save!
+    render json: @pokemon, :status => :ok
   end
 
   #
   # Update an existing pokemon
   def update
-    @pokemon = make_sure_pokemon_exists
+    @pokemon = get_pokemon_from_request
     if @pokemon == nil
       render :nothing => true, :status => 404
       return
@@ -68,7 +97,7 @@ class PokemonsController < ApplicationController
   #
   # Delete a specific Pokemon instance from the database
   def delete
-    @pokemon = make_sure_pokemon_exists
+    @pokemon = get_pokemon_from_request
     if @pokemon == nil
       render :nothing => true, :status => 404
       return
@@ -80,7 +109,9 @@ class PokemonsController < ApplicationController
 
   #
   # Utility method to stay DRY
-  def make_sure_pokemon_exists()
+  # Makes sure the request has the "id" param
+  # and that this id is associated with a pokemon
+  def get_pokemon_from_request()
     unless params.has_key?(:id)
       return nil
     end
