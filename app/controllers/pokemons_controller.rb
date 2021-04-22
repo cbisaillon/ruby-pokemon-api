@@ -92,6 +92,35 @@ class PokemonsController < ApplicationController
       return
     end
 
+    updatable_columns = [
+      "number",
+      "name",
+      "type_1_id",
+      "type_2_id",
+      "total",
+      "hp",
+      "attack",
+      "defense",
+      "sp_attack",
+      "sp_defense",
+      "speed",
+      "generation",
+      "is_legendary"
+    ]
+
+    new_attributes = {}
+
+    params.each do |key, value|
+      # Make sure the user is not trying to update a
+      # column they cannot update
+      if updatable_columns.include? key
+        new_attributes[key] = value
+      end
+    end
+
+    @pokemon.update(new_attributes)
+
+    render json: @pokemon, :status => :ok
   end
 
   #

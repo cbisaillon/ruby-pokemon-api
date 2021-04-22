@@ -8,7 +8,6 @@ class PokemonsCreateTest < ActionDispatch::IntegrationTest
       type_1_id: 1,
       type_2_id: nil
     }
-    result = @response.parsed_body
     assert_response :success
 
     # Check that latest result in database match
