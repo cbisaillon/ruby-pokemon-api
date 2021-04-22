@@ -26,7 +26,7 @@ class PokemonsController < ApplicationController
       return
     end
 
-    @pokemons = Pokemon.limit(per_page).offset(offset).all
+    @pokemons = Pokemon.limit(per_page).offset(offset).order(number: :asc).all
     render json: {
       :page => page,
       :per_page => per_page,

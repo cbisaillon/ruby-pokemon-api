@@ -10,6 +10,8 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
     assert_equal true, result["has_next"]
     assert_equal false, result["has_prev"]
     assert_equal 2, result["pokemons"].length
+    assert_equal 1, result["pokemons"][0]["number"]
+    assert_equal 2, result["pokemons"][1]["number"]
   end
 
   test "should get index last page" do
