@@ -1,7 +1,7 @@
 class TypesController < ApplicationController
 
   #
-  # List the all the pokemon types
+  # List all the pokemon types
   def index
     render json: Type.all, :status => :ok
   end

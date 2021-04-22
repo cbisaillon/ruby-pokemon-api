@@ -13,6 +13,7 @@ class PokemonsController < ApplicationController
       per_page = params[:per_page].to_i
     end
 
+    # Check that the parameters are valid
     if page <= 0 or per_page <= 0
       render :nothing => true, :status => :bad_request
       return
@@ -21,6 +22,7 @@ class PokemonsController < ApplicationController
     nb_pokemons = Pokemon.count
     offset = (page - 1) * per_page
 
+    # Make sure the offset is valid
     if offset >= nb_pokemons
       render :nothing => true, :status => 404
       return
@@ -140,6 +142,7 @@ class PokemonsController < ApplicationController
   # Utility method to stay DRY
   # Makes sure the request has the "id" param
   # and that this id is associated with a pokemon
+  # @return the pokemon or nil if it cannot find it
   def get_pokemon_from_request()
     unless params.has_key?(:id)
       return nil
