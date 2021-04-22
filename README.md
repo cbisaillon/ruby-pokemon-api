@@ -1,6 +1,8 @@
 # Pokedex on rails
 
 ## Before running
+1. Install the dependencies `./bin/bundle install`
+1. Create the database: `./bin/rake db:create`   
 1. Run the migrations: `./bin/rails db:migrate`
 1. Seed the pokemon data to the database: `./bin/bundle exec /usr/bin/ruby ./scripts/import-pokemons.rb`
 1. Run the application: `./bin/rails server -b 0.0.0.0 -p 3000 -e development`
