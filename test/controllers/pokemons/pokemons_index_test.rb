@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PokemonsControllerTest < ActionDispatch::IntegrationTest
+class PokemonsIndexTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get "/pokemons", params: {page: 1, per_page: 2}
     result = @response.parsed_body

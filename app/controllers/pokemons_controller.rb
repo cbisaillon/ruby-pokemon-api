@@ -36,6 +36,18 @@ class PokemonsController < ApplicationController
     }, :status => :ok
   end
 
+  #
+  # View a specific pokemon's data
+  def view
+    unless params.has_key?(:id)
+      render :nothing => true, :status => :bad_request
+      return
+    end
+
+    @pokemon = Pokemon.find(params[:id])
+    render json: @pokemon, :status => :ok
+  end
+
   def create
 
   end
