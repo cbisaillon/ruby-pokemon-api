@@ -3,6 +3,7 @@
 ## Before running
 1. Run the migrations: `./bin/rails db:migrate`
 1. Seed the pokemon data to the database: `./bin/bundle exec /usr/bin/ruby ./scripts/import-pokemons.rb`
+1. Run the application: `./bin/rails server -b 0.0.0.0 -p 3000 -e development`
 
 ## Endpoints
 Definition of endpoints provided by this app
@@ -21,7 +22,7 @@ Inputs:
 
 Outputs:
 
-```json
+```
 {
   "page": number, // the current page
   "per_page": number, // the number of result per page
@@ -61,7 +62,7 @@ Outputs
 
 This endpoint returns the created pokemon
 
-```json
+```
 {
   "id": number,
   "number": number,
@@ -107,7 +108,7 @@ Outputs:
 
 This endpoints returns the updated pokemon.
 
-```json
+```
 {
   "id": number,
   "number": number,
