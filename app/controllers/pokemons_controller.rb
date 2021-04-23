@@ -15,7 +15,9 @@ class PokemonsController < ApplicationController
 
     # Check that the parameters are valid
     if page <= 0 or per_page <= 0
-      render :nothing => true, :status => :bad_request
+      render :json => {
+        :error => "page and per_page must be greater than zero."
+      }, :status => :bad_request
       return
     end
 
@@ -24,7 +26,9 @@ class PokemonsController < ApplicationController
 
     # Make sure the offset is valid
     if offset >= nb_pokemons
-      render :nothing => true, :status => 404
+      render :json => {
+        :error => "No pokemons found at that page"
+      }, :status => 404
       return
     end
 
@@ -43,7 +47,9 @@ class PokemonsController < ApplicationController
   def view
     @pokemon = get_pokemon_from_request
     if @pokemon == nil
-      render :nothing => true, :status => 404
+      render :json => {
+        :error => "Pokemon not found"
+      }, :status => 404
       return
     end
 
@@ -81,7 +87,14 @@ class PokemonsController < ApplicationController
       is_legendary: params[:is_legendary]
     )
 
-    @pokemon.save!
+    begin
+      @pokemon.save!
+    rescue ActiveRecord::RecordNotUnique
+      render :json => {
+        :error => "Record not unique !"
+      }, :status => 400
+      return
+    end
     render json: @pokemon, :status => :ok
   end
 
@@ -90,7 +103,9 @@ class PokemonsController < ApplicationController
   def update
     @pokemon = get_pokemon_from_request
     if @pokemon == nil
-      render :nothing => true, :status => 404
+      render :json => {
+        :error => "Could not find pokemon"
+      }, :status => 404
       return
     end
 
@@ -120,7 +135,14 @@ class PokemonsController < ApplicationController
       end
     end
 
-    @pokemon.update(new_attributes)
+    begin
+      @pokemon.update(new_attributes)
+    rescue ActiveRecord::RecordNotUnique
+      render :json => {
+        :error => "Record not unique !"
+      }, :status => 400
+      return
+    end
 
     render json: @pokemon, :status => :ok
   end
@@ -130,7 +152,9 @@ class PokemonsController < ApplicationController
   def delete
     @pokemon = get_pokemon_from_request
     if @pokemon == nil
-      render :nothing => true, :status => 404
+      render :json => {
+        :error => "Could not find pokemon"
+      }, :status => 404
       return
     end
 

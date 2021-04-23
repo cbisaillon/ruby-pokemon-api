@@ -27,4 +27,18 @@ class PokemonsCreateTest < ActionDispatch::IntegrationTest
     assert_equal "Missing params", result["error"]
   end
 
+  test "should error on non unique" do
+    pokemon = Pokemon.first
+
+    post "/pokemons/create", params: {
+      number: pokemon.number,
+      name: "FireBulba",
+      type_1_id: 1,
+    }
+    result = @response.parsed_body
+    assert_response 400
+    assert_not_nil result["error"]
+    assert_equal "Record not unique !", result["error"]
+  end
+
 end

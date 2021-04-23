@@ -34,4 +34,19 @@ class PokemonsUpdateTest < ActionDispatch::IntegrationTest
     assert_not_equal 444, pokemon.id
   end
 
+  test "should error on non unique" do
+    pokemon1 = Pokemon.first
+    pokemon_to_update = Pokemon.last
+
+    post "/pokemons/#{pokemon_to_update.id}/update", params: {
+      number: pokemon1.number,
+      name: "FireBulba",
+      type_1_id: 1,
+    }
+    result = @response.parsed_body
+    assert_response 400
+    assert_not_nil result["error"]
+    assert_equal "Record not unique !", result["error"]
+  end
+
 end
